@@ -4,10 +4,16 @@ import Header from "./component/header/header";
 import TaskList from "./component/main/TaskList";
 
 const TodoApp = () => {
+    const todoData = [
+        {className:'completed', id:1},
+        {className:'editing', id:2},
+        {id:'3'}
+    ];
+
     return (
       <section className="todoapp">
         <Header />
-        <TaskList />
+        <TaskList todos={todoData} />
       </section>
     );
 };
