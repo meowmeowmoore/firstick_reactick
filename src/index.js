@@ -24,10 +24,10 @@ export default class TodoApp extends Component {
         };
         this.onCompleted = (id) => {
             this.setState(({todoData}) => {
-                console.log(todoData)
+
                 const newArray = todoData.map((item) => {
-                    if(todoData[id] === item){
-                        item.complete = !item.complete
+                    if (todoData[id] === item) {
+                        item.complete = !item.complete;
                     }
                     return item;
                 })
@@ -37,8 +37,29 @@ export default class TodoApp extends Component {
             })
         }
 
+        this.onCreate = (value, id) => {
+            const newElement =  {
+                value: value,
+                complete: false,
+                id: id
+            };
+            return newElement;
+        }
+
+        this.onAdd = (text) => {
+            this.setState(({todoData}) => {
+                const newElement = this.onCreate(text, this.state.todoData.length + 1);
+                const newArray = todoData.concat(newElement);
+
+                return {
+                    todoData: newArray,
+                }
+            })
+        }
+
         this.onDeleted = (id) => {
             this.setState(({todoData}) => {
+
                 const idx = todoData.findIndex((el) => el.id === id);
 
                 const before = todoData.slice(0, idx);
@@ -57,13 +78,14 @@ export default class TodoApp extends Component {
     render() {
         return (
             <section className="todoapp">
-                <Header/>
+                <Header
+                onAdd={this.onAdd}/>
                 <TaskList
 
-                        todos={this.state.todoData}
-                        onDeleted={this.onDeleted}
-                        onCompleted={this.onCompleted}
-                        />
+                    todos={this.state.todoData}
+                    onDeleted={this.onDeleted}
+                    onCompleted={this.onCompleted}
+                />
                 <Footer buttons={this.state.btns}/>
             </section>
         );

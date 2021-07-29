@@ -1,11 +1,12 @@
 import React from 'react';
 import NewTaskForm from "./NewTaskForm";
 
-const Header = () => {
+const Header = (props) => {
+    const {onAdd} = props;
     return (
         <header className='header'>
             <h1>todos</h1>
-            <NewTaskForm />
+            <NewTaskForm onAdd={onAdd}/>
         </header>
     )
 }

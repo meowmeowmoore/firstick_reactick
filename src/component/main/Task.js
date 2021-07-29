@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { formatDistance, subDays } from 'date-fns';
+import {formatDistance, subDays} from 'date-fns';
 
 
 export default class Task extends Component {
@@ -9,7 +9,7 @@ export default class Task extends Component {
 
         return (
             <div className="view">
-                <input className="toggle" type="checkbox"></input>
+                <input className="toggle" type="checkbox"/>
                 <label>
                     <span
                         className="description"
@@ -18,9 +18,9 @@ export default class Task extends Component {
                     {formatDistance(subDays(new Date(), 5), new Date())}
                 </span>
                 </label>
-                <button className="icon icon-edit"></button>
+                <button className="icon icon-edit"/>
                 <button className="icon icon-destroy"
-                        onClick={onDeleted}></button>
+                        onClick={onDeleted}/>
             </div>
         );
     }
