@@ -38,7 +38,7 @@ export default class TodoApp extends Component {
         }
 
         this.onCreate = (value, id) => {
-            const newElement =  {
+            const newElement = {
                 value: value,
                 complete: false,
                 id: id
@@ -72,6 +72,19 @@ export default class TodoApp extends Component {
                 }
             });
         }
+
+        this.onClearCompleted = () => {
+            this.setState(({todoData}) => {
+                const newArray = todoData.filter((item) => {
+                    if (!item.complete) {
+                        return item;
+                    }
+                })
+                return {
+                    todoData: newArray,
+                }
+            })
+        }
     }
 
 
@@ -79,14 +92,15 @@ export default class TodoApp extends Component {
         return (
             <section className="todoapp">
                 <Header
-                onAdd={this.onAdd}/>
+                    onAdd={this.onAdd}/>
                 <TaskList
 
                     todos={this.state.todoData}
                     onDeleted={this.onDeleted}
                     onCompleted={this.onCompleted}
                 />
-                <Footer buttons={this.state.btns}/>
+                <Footer buttons={this.state.btns}
+                        onClearCompleted={this.onClearCompleted}/>
             </section>
         );
     }
@@ -94,3 +108,5 @@ export default class TodoApp extends Component {
 ;
 
 ReactDOM.render(<TodoApp/>, document.getElementById("div"));
+//привести в порядок в мэйне адишники
+//ревью метода onDeleted

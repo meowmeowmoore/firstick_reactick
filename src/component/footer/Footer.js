@@ -1,7 +1,7 @@
 import React from 'react';
 import TasksFilter from "./TasksFilter";
 
-const Footer = ({buttons}) => {
+const Footer = ({buttons, onClearCompleted}) => {
     const todoCount = <span className="todo-count">1 items left</span>;
     const btn = buttons.map((item) => {
         const {id, ...inf} = item;
@@ -19,6 +19,8 @@ const Footer = ({buttons}) => {
             <ul className='filters'>
                 {btn}
             </ul>
+            <button className='clear-completed'
+                    onClick={onClearCompleted}>Clear completed</button>
         </footer>
     );
 };
