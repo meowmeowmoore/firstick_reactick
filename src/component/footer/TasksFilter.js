@@ -1,8 +1,14 @@
 import React from "react";
 
-const TasksFilter = ({value, className}) => {
+const TasksFilter = ({value, selected, onFilter}) => {
 
-    return <button className={className ? className : null}>
+    let classNames = '';
+    if (selected) {
+        classNames += 'selected';
+
+    }
+    return <button className={classNames}
+        onClick={onFilter}>
         {value}
     </button>;
 

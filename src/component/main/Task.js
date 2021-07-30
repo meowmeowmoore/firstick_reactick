@@ -5,7 +5,7 @@ import {formatDistance, subDays} from 'date-fns';
 export default class Task extends Component {
 
     render() {
-        const {value, onCompleted, onDeleted} = this.props;
+        const {value, onCompleted, onDeleted, onEdited} = this.props;
 
         return (
             <div className="view">
@@ -18,7 +18,8 @@ export default class Task extends Component {
                     {formatDistance(subDays(new Date(), 5), new Date())}
                 </span>
                 </label>
-                <button className="icon icon-edit"/>
+                <button className="icon icon-edit"
+                onClick={onEdited}/>
                 <button className="icon icon-destroy"
                         onClick={onDeleted}/>
             </div>

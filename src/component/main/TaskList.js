@@ -4,22 +4,38 @@ import Task from "./Task";
 export default class TaskList extends Component {
 
     render() {
-        const {todos, onCompleted, onDeleted} = this.props;
+        const {todos, onCompleted, onDeleted, onEdited} = this.props;
 
-        const elements = todos.map((item, index) => {
-            const {value, complete, id} = item;
+        const elements = todos.map((item, id) => {
+
+            // console.log(item)
+            const {value, complete, editing, hidden} = item;
+
             let classNames = '';
 
-            if (complete) {
-                classNames+= 'completed';
+            if (hidden) {
+                classNames+=' hidden'
             }
 
-            return (<li key={index.toString()} className={classNames}>
-                <Task
-                    value={value}
-                    onCompleted={() => onCompleted(index)}
-                    onDeleted={() => onDeleted(id)}/>
-            </li>)
+            if (complete) {
+                classNames += ' completed';
+            }
+//не стирается вэлъю у инпута для изменения задачи
+            if (editing) {
+                classNames += ' editing';
+                const editingForm = <input type='text' className='edit' value={value}></input>;
+                return (<li key={id.toString()} className={classNames}>
+                    {editingForm}
+                </li>)
+            } else {
+                return (<li key={id.toString()} className={classNames}>
+                    <Task
+                        value={value}
+                        onCompleted={() => onCompleted(id)}
+                        onDeleted={() => onDeleted(id)}
+                        onEdited={() => onEdited(id)}/>
+                </li>)
+            }
         })
 
         return (
