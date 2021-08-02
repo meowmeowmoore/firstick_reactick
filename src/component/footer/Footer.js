@@ -1,9 +1,9 @@
 import React from 'react';
 import TasksFilter from "./TasksFilter";
 
-const Footer = ({buttons, toView, onClearCompleted, onFilter}) => {
-
-    const todoCount = <span className="todo-count">1 items left</span>;
+const Footer = ({buttons, onClearCompleted, onFilter, data}) => {
+    const counter = data.filter((item) => !item.complete).length;
+    const todoCount = <span className="todo-count">{counter} items left</span>;
     const btn = buttons.map((item, index) => {
         return (
             <li key={index}>

@@ -8,8 +8,7 @@ export default class TaskList extends Component {
 
         const elements = todos.map((item, id) => {
 
-            // console.log(item)
-            const {value, complete, editing, hidden} = item;
+            const {value, complete, editing, hidden, date} = item;
 
             let classNames = '';
 
@@ -20,7 +19,7 @@ export default class TaskList extends Component {
             if (complete) {
                 classNames += ' completed';
             }
-//не стирается вэлъю у инпута для изменения задачи
+
             if (editing) {
                 classNames += ' editing';
                 const editingForm = <input type='text' className='edit' value={value}></input>;
@@ -33,7 +32,8 @@ export default class TaskList extends Component {
                         value={value}
                         onCompleted={() => onCompleted(id)}
                         onDeleted={() => onDeleted(id)}
-                        onEdited={() => onEdited(id)}/>
+                        onEdited={() => onEdited(id)}
+                    date={date}/>
                 </li>)
             }
         })

@@ -9,23 +9,24 @@ export default class NewTaskForm extends Component {
         }
 
         this.newTaskText = (event) => {
+
             this.setState({
                 value: event.target.value,
-            })
+            });
+            if (event.code === "Enter") {
+                this.props.onAdd(this.state.value);
+            }
+            return {}
+
         }
     }
 
     render() {
-        const {onAdd} = this.props;
 
         return (<input className='new-todo'
                        placeholder='What needs to be done?'
                        autoFocus
-                       onKeyUp={(event)=> {
-                           if(event.code === "Enter"){
-                               return onAdd(this.state.value);
-                           }}}
-                       onChange={this.newTaskText}/>
+                       onKeyUp={this.newTaskText}/>
         )
     }
 }

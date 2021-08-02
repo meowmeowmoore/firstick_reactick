@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
-import {formatDistance, subDays} from 'date-fns';
-
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 
 export default class Task extends Component {
 
     render() {
-        const {value, onCompleted, onDeleted, onEdited} = this.props;
+
+
+        const {value, onCompleted, onDeleted, onEdited, date} = this.props;
+
+        let distanceToNow = `created ${formatDistanceToNow(new Date(date),  { addSuffix: true, includeSeconds: true })}`
 
         return (
             <div className="view">
@@ -15,7 +18,7 @@ export default class Task extends Component {
                         className="description"
                         onClick={onCompleted}>{value}</span>
                     <span className="created">
-                    {formatDistance(subDays(new Date(), 5), new Date())}
+                        {distanceToNow}
                 </span>
                 </label>
                 <button className="icon icon-edit"

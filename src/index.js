@@ -7,14 +7,14 @@ import Footer from "./component/footer/Footer";
 
 export default class TodoApp extends Component {
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
             todoData: [
-                {value: 'Completed task', complete: false, editing: false, hidden: false},
-                {value: 'Editing task', complete: false, editing: false, hidden: false},
-                {value: 'Active task', complete: false, editing: false, hidden: false}
+                {value: 'Completed task', complete: false, editing: false, hidden: false, date: new Date(2021, 6, 21)},
+                {value: 'Editing task', complete: false, editing: false, hidden: false, date: new Date(2021, 6, 31)},
+                {value: 'Active task', complete: false, editing: false, hidden: false, date: new Date(2021,7,1)}
             ],
             btns: [
                 {value: 'All', selected: false},
@@ -43,6 +43,8 @@ export default class TodoApp extends Component {
                 value: value,
                 complete: false,
                 editing: false,
+                hidden: false,
+                date: new Date(),
             };
             return newElement;
         }
@@ -139,8 +141,6 @@ export default class TodoApp extends Component {
                     todoData: filterTask,
                 }
             })
-
-
         }
     }
 
@@ -159,7 +159,8 @@ export default class TodoApp extends Component {
                 <Footer buttons={this.state.btns}
                         toView={this.state.toView}
                         onClearCompleted={this.onClearCompleted}
-                        onFilter={this.onFilter}/>
+                        onFilter={this.onFilter}
+                data={this.state.todoData}/>
             </section>
         );
     }
@@ -167,6 +168,3 @@ export default class TodoApp extends Component {
 ;
 
 ReactDOM.render(<TodoApp/>, document.getElementById("div"));
-//привести в порядок в мэйне адишники
-//ревью метода onDeleted
-//очистка поля ввода
