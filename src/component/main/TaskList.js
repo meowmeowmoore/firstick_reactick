@@ -1,10 +1,8 @@
-import React, {Component} from 'react';
+import React from 'react';
 import Task from "./Task";
+import PropTypes from 'prop-types';
 
-export default class TaskList extends Component {
-
-    render() {
-        const {todos, onCompleted, onDeleted, onEdited} = this.props;
+const TaskList = ({todos, onCompleted, onDeleted, onEdited, onEnter}) => {
 
         const elements = todos.map((item, id) => {
 
@@ -13,7 +11,7 @@ export default class TaskList extends Component {
             let classNames = '';
 
             if (hidden) {
-                classNames+=' hidden'
+                classNames += ' hidden'
             }
 
             if (complete) {
@@ -22,10 +20,13 @@ export default class TaskList extends Component {
 
             if (editing) {
                 classNames += ' editing';
-                const editingForm = <input type='text' className='edit' value={value}></input>;
-                return (<li key={id.toString()} className={classNames}>
-                    {editingForm}
-                </li>)
+                const editingForm = <input className='edit'
+                                           autoFocus
+                                           onKeyUp={(event) => onEnter(event, id)}/>;
+                return (<li key={id.toString()}
+                            className={classNames}>
+                            {editingForm}
+                        </li>)
             } else {
                 return (<li key={id.toString()} className={classNames}>
                     <Task
@@ -33,10 +34,10 @@ export default class TaskList extends Component {
                         onCompleted={() => onCompleted(id)}
                         onDeleted={() => onDeleted(id)}
                         onEdited={() => onEdited(id)}
-                    date={date}/>
+                        date={date}/>
                 </li>)
             }
-        })
+        });
 
         return (
             <section className='main'>
@@ -45,5 +46,34 @@ export default class TaskList extends Component {
                 </ul>
             </section>
         );
-    }
+}
+
+export default TaskList;
+
+TaskList.propTypes = {
+    todos: PropTypes.arrayOf(PropTypes.exact({
+        value: PropTypes.string,
+        complete: PropTypes.bool,
+        editing: PropTypes.bool,
+        hidden: PropTypes.bool,
+        date: PropTypes.instanceOf(Date),
+    })),
+    onCompleted: PropTypes.func,
+    onDeleted: PropTypes.func,
+    onEdited: PropTypes.func,
+    onEnter: PropTypes.func,
+}
+
+TaskList.defaultProps = {
+    todos: [{
+        value: '',
+        complete: false,
+        editing: false,
+        hidden: false,
+        date: new Date(2021, 1, 1),
+    }],
+    onCompleted: () => {},
+    onDeleted: () => {},
+    onEdited: () => {},
+    onEnter: () => {},
 }

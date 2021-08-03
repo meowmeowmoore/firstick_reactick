@@ -1,8 +1,8 @@
 import React from 'react';
 import NewTaskForm from "./NewTaskForm";
+import PropTypes from 'prop-types'
 
-const Header = (props) => {
-    const {onAdd} = props;
+const Header = ({onAdd}) => {
     return (
         <header className='header'>
             <h1>todos</h1>
@@ -11,4 +11,11 @@ const Header = (props) => {
     )
 }
 
+Header.propTypes = {
+    onAdd: PropTypes.func,
+}
+
+Header.defaultProps = {
+    onAdd: () => {}
+}
 export default Header;

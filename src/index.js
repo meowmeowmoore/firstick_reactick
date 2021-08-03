@@ -14,10 +14,10 @@ export default class TodoApp extends Component {
             todoData: [
                 {value: 'Completed task', complete: false, editing: false, hidden: false, date: new Date(2021, 6, 21)},
                 {value: 'Editing task', complete: false, editing: false, hidden: false, date: new Date(2021, 6, 31)},
-                {value: 'Active task', complete: false, editing: false, hidden: false, date: new Date(2021,7,1)}
+                {value: 'Active task', complete: false, editing: false, hidden: false, date: new Date(2021, 7, 1)}
             ],
             btns: [
-                {value: 'All', selected: false},
+                {value: 'All', selected: true},
                 {value: 'Active', selected: false},
                 {value: 'Completed', selected: false}
             ]
@@ -142,8 +142,26 @@ export default class TodoApp extends Component {
                 }
             })
         }
-    }
 
+        this.onEnter = (event, id) => {
+            if (event.code === 'Enter') {
+
+                this.setState(({todoData}) => {
+                    const newArray = todoData.map((item) => {
+                        if (todoData[id] === item) {
+                            item.value = event.target.value;
+                            console.log('here')
+                        }
+                        return item;
+                    });
+
+                    return {
+                        todoData: newArray,
+                    }
+                })
+            }
+        }
+    }
 
     render() {
         return (
@@ -155,16 +173,17 @@ export default class TodoApp extends Component {
                     onDeleted={this.onDeleted}
                     onCompleted={this.onCompleted}
                     onEdited={this.onEdited}
+                    onEnter={this.onEnter}
                 />
                 <Footer buttons={this.state.btns}
                         toView={this.state.toView}
                         onClearCompleted={this.onClearCompleted}
                         onFilter={this.onFilter}
-                data={this.state.todoData}/>
+                        data={this.state.todoData}/>
             </section>
         );
     }
-}
-;
+};
+
 
 ReactDOM.render(<TodoApp/>, document.getElementById("div"));

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TasksFilter from "./TasksFilter";
 
 const Footer = ({buttons, onClearCompleted, onFilter, data}) => {
@@ -28,3 +29,35 @@ const Footer = ({buttons, onClearCompleted, onFilter, data}) => {
 };
 
 export default Footer;
+
+Footer.propTypes = {
+    buttons: PropTypes.arrayOf(PropTypes.exact({
+        value: PropTypes.string,
+        selected: PropTypes.bool,
+    })),
+    onClearCompleted: PropTypes.func,
+    onFilter: PropTypes.func,
+    data: PropTypes.arrayOf(PropTypes.exact({
+        value: PropTypes.string,
+        complete: PropTypes.bool,
+        editing: PropTypes.bool,
+        hidden: PropTypes.bool,
+        date: PropTypes.instanceOf(Date),
+    })),
+}
+
+Footer.defaultProps = {
+    buttons: [{
+        value: '',
+        selected: false,
+    }],
+    onClearCompleted: () => {},
+    onFilter: () => {},
+    data: [{
+        value: '',
+        complete: false,
+        editing: false,
+        hidden: false,
+        date: new Date(2021, 1, 1),
+    }]
+}
