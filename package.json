@@ -60,8 +60,10 @@
     }
   },
   "lint-staged": {
-    "*.js": ["eslint --fix",
+    "src/**/*.{js,jsx}": [
+      "eslint --fix",
       "prettier --write",
-      "git add"]
+      "git add"
+    ]
   }
 }
