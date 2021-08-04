@@ -1,189 +1,178 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import Header from "./component/header/header";
-import TaskList from "./component/main/TaskList";
-import Footer from "./component/footer/Footer";
-
+import Header from './component/header/header';
+import TaskList from './component/main/TaskList';
+import Footer from './component/footer/Footer';
 
 export default class TodoApp extends Component {
+  constructor(props) {
+    super(props);
 
-    constructor(props) {
-        super(props);
+    this.state = {
+      todoData: [
+        { value: 'Completed task', complete: false, editing: false, hidden: false, date: new Date(2021, 6, 21) },
+        { value: 'Editing task', complete: false, editing: false, hidden: false, date: new Date(2021, 6, 31) },
+        { value: 'Active task', complete: false, editing: false, hidden: false, date: new Date(2021, 7, 1) },
+      ],
+      buttons: [
+        { value: 'All', selected: true },
+        { value: 'Active', selected: false },
+        { value: 'Completed', selected: false },
+      ],
+    };
 
-        this.state = {
-            todoData: [
-                {value: 'Completed task', complete: false, editing: false, hidden: false, date: new Date(2021, 6, 21)},
-                {value: 'Editing task', complete: false, editing: false, hidden: false, date: new Date(2021, 6, 31)},
-                {value: 'Active task', complete: false, editing: false, hidden: false, date: new Date(2021, 7, 1)}
-            ],
-            btns: [
-                {value: 'All', selected: true},
-                {value: 'Active', selected: false},
-                {value: 'Completed', selected: false}
-            ]
+    this.onCompleted = (id) => {
+      this.setState(({ todoData }) => {
+        const newArray = todoData.map((item) => {
+          const res = item;
+          if (todoData[id] === item) {
+            res.complete = !res.complete;
+          }
+          return res;
+        });
+        return {
+          todoData: newArray,
         };
+      });
+    };
 
-        this.onCompleted = (id) => {
-            this.setState(({todoData}) => {
+    this.onCreate = (value) => ({
+      value,
+      complete: false,
+      editing: false,
+      hidden: false,
+      date: new Date(),
+    });
 
-                const newArray = todoData.map((item) => {
-                    if (todoData[id] === item) {
-                        item.complete = !item.complete;
-                    }
-                    return item;
-                })
-                return {
-                    todoData: newArray,
-                }
-            })
-        }
+    this.onAdd = (text) => {
+      this.setState(({ todoData }) => {
+        const newElement = this.onCreate(text);
+        const newArray = todoData.concat(newElement);
 
-        this.onCreate = (value) => {
-            const newElement = {
-                value: value,
-                complete: false,
-                editing: false,
-                hidden: false,
-                date: new Date(),
-            };
-            return newElement;
-        }
+        return {
+          todoData: newArray,
+        };
+      });
+    };
 
-        this.onAdd = (text) => {
-            this.setState(({todoData}) => {
-                const newElement = this.onCreate(text);
-                const newArray = todoData.concat(newElement);
+    this.onEdited = (id) => {
+      this.setState(({ todoData }) => {
+        const newArray = todoData.map((item) => {
+          const res = item;
+          if (todoData[id] === item) {
+            res.editing = !res.editing;
+          }
+          return res;
+        });
+        return {
+          todoData: newArray,
+        };
+      });
+    };
 
-                return {
-                    todoData: newArray,
-                }
-            })
-        }
+    this.onDeleted = (id) => {
+      this.setState(({ todoData }) => {
+        const newArray = todoData.filter((item) => item !== todoData[id]);
 
-        this.onEdited = (id) => {
-            this.setState(({todoData}) => {
+        return {
+          todoData: newArray,
+        };
+      });
+    };
 
-                const newArray = todoData.map((item) => {
-                    if (todoData[id] === item) {
-                        item.editing = !item.editing;
-                    }
-                    return item;
-                })
-                return {
-                    todoData: newArray,
-                }
-            })
-        }
+    this.onClearCompleted = () => {
+      this.setState(({ todoData }) => {
+        const newArray = todoData.filter((item) => !item.complete);
+        return {
+          todoData: newArray,
+        };
+      });
+    };
 
-        this.onDeleted = (id) => {
-            this.setState(({todoData}) => {
-                const newArray = todoData.filter((item) => {
-                    return item !== todoData[id];
-                });
+    this.onFilter = (id) => {
+      const { buttons } = this.state;
+      this.toView(buttons[id]);
 
-                return {
-                    todoData: newArray
-                }
-            });
-        }
+      this.setState(() => {
+        const newArray = buttons.map((item) => {
+          const res = item;
+          res.selected = false;
 
-        this.onClearCompleted = () => {
-            this.setState(({todoData}) => {
-                const newArray = todoData.filter((item) => {
-                    if (!item.complete) {
-                        return item;
-                    }
-                })
-                return {
-                    todoData: newArray,
-                }
-            })
-        }
+          if (buttons[id] === item) {
+            res.selected = !item.selected;
+          }
+          return res;
+        });
 
-        this.onFilter = (id) => {
-            this.toView(this.state.btns[id]);
+        return {
+          buttons: newArray,
+        };
+      });
+    };
 
-            this.setState(({btns}) => {
-                const newArray = btns.map((item) => {
-                    item.selected = false;
-
-                    if (btns[id] === item) {
-                        item.selected = !item.selected;
-                    }
-                    return item;
-                });
-
-                return {
-                    btns: newArray,
-                }
-            })
-
-        }
-
-        this.toView = (stateBtn) => {
-
-            this.setState(({todoData}) => {
-                const filterTask = todoData.map((item) => {
-                    item.hidden = false;
-                    if (stateBtn.value === 'Completed') {
-                        if (!item.complete) {
-                            item.hidden = !item.hidden;
-                        }
-
-                    } else if (stateBtn.value === "Active") {
-                        if (item.complete) {
-                            item.hidden = !item.hidden;
-                        }
-                    }
-                    return item;
-                });
-                return {
-                    todoData: filterTask,
-                }
-            })
-        }
-
-        this.onEnter = (event, id) => {
-            if (event.code === 'Enter') {
-
-                this.setState(({todoData}) => {
-                    const newArray = todoData.map((item) => {
-                        if (todoData[id] === item) {
-                            item.value = event.target.value;
-                            console.log('here')
-                        }
-                        return item;
-                    });
-
-                    return {
-                        todoData: newArray,
-                    }
-                })
+    this.toView = (stateBtn) => {
+      this.setState(({ todoData }) => {
+        const filterTask = todoData.map((item) => {
+          const res = item;
+          res.hidden = false;
+          if (stateBtn.value === 'Completed') {
+            if (!item.complete) {
+              res.hidden = !item.hidden;
             }
-        }
-    }
+          } else if (stateBtn.value === 'Active') {
+            if (item.complete) {
+              res.hidden = !item.hidden;
+            }
+          }
+          return res;
+        });
+        return {
+          todoData: filterTask,
+        };
+      });
+    };
 
-    render() {
-        return (
-            <section className="todoapp">
-                <Header
-                    onAdd={this.onAdd}/>
-                <TaskList
-                    todos={this.state.todoData}
-                    onDeleted={this.onDeleted}
-                    onCompleted={this.onCompleted}
-                    onEdited={this.onEdited}
-                    onEnter={this.onEnter}
-                />
-                <Footer buttons={this.state.btns}
-                        toView={this.state.toView}
-                        onClearCompleted={this.onClearCompleted}
-                        onFilter={this.onFilter}
-                        data={this.state.todoData}/>
-            </section>
-        );
-    }
-};
+    this.onEnter = (event, id) => {
+      if (event.code === 'Enter') {
+        this.setState(({ todoData }) => {
+          const newArray = todoData.map((item) => {
+            const res = item;
+            if (todoData[id] === item) {
+              res.value = event.target.value;
+            }
+            return res;
+          });
 
+          return {
+            todoData: newArray,
+          };
+        });
+      }
+    };
+  }
 
-ReactDOM.render(<TodoApp/>, document.getElementById("div"));
+  render() {
+    const { todoData, buttons } = this.state;
+    return (
+      <section className="todoapp">
+        <Header onAdd={this.onAdd} />
+        <TaskList
+          todos={todoData}
+          onDeleted={this.onDeleted}
+          onCompleted={this.onCompleted}
+          onEdited={this.onEdited}
+          onEnter={this.onEnter}
+        />
+        <Footer
+          buttons={buttons}
+          toView={this.toView}
+          onClearCompleted={this.onClearCompleted}
+          onFilter={this.onFilter}
+          data={todoData}
+        />
+      </section>
+    );
+  }
+}
+
+ReactDOM.render(<TodoApp />, document.getElementById('div'));
