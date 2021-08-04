@@ -61,9 +61,8 @@
   },
   "lint-staged": {
     "src/**/*.{js,jsx}": [
-      "eslint --fix",
-      "prettier --write",
-      "git add"
+      "npm run eslint --fix",
+      "prettier --write"
     ]
   }
 }
