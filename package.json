@@ -41,6 +41,14 @@
       "last 1 safari version"
     ]
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.(js|jsx)": ["npm run lint:write", "git add"]
+  },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
@@ -53,16 +61,5 @@
     "husky": "^4.0.0",
     "lint-staged": "^11.1.1",
     "prettier": "^2.3.2"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint"
-    }
-  },
-  "lint-staged": {
-    "\"jslint\": \"eslint src/ --ext .js --ext .ts --ext .tsx\"": [
-      "npm run eslint --fix",
-      "prettier --write"
-    ]
   }
 }
