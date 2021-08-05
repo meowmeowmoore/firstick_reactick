@@ -12,7 +12,7 @@ const Footer = ({ buttons, onClearCompleted, onFilter, data }) => {
         <TasksFilter {...item} onFilter={() => onFilter(index)} />
       </li>
     );
-  });:
+  });
 
   return (
     <footer className="footer">

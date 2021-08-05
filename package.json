@@ -47,7 +47,9 @@
     }
   },
   "lint-staged": {
-    "*.(js|jsx)": ["npm run lint:write", "git add"]
+    "*.(js|jsx)": ["npm run lint:fix",
+      "npx prettier --write",
+      "git add"]
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
