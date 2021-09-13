@@ -5,11 +5,11 @@ import TasksFilter from './TasksFilter';
 const Footer = ({ buttons, onClearCompleted, onFilter, data }) => {
   const counter = data.filter((item) => !item.complete).length;
   const todoCount = <span className="todo-count">{counter} items left</span>;
-  const btn = buttons.map((item, index) => {
-    const id = index;
+  const btn = buttons.map((item) => {
+    const { id } = item;
     return (
       <li key={id}>
-        <TasksFilter {...item} onFilter={() => onFilter(index)} />
+        <TasksFilter {...item} onFilter={() => onFilter(id)} />
       </li>
     );
   });
@@ -32,6 +32,7 @@ Footer.propTypes = {
     PropTypes.exact({
       value: PropTypes.string,
       selected: PropTypes.bool,
+      id: PropTypes.string,
     })
   ),
   onClearCompleted: PropTypes.func,
@@ -43,6 +44,15 @@ Footer.propTypes = {
       editing: PropTypes.bool,
       hidden: PropTypes.bool,
       date: PropTypes.instanceOf(Date),
+      id: PropTypes.string,
+      timer: PropTypes.exact({
+        min: PropTypes.string,
+        sec: PropTypes.string,
+      }),
+      timerButtons: PropTypes.exact({
+        play: PropTypes.bool,
+        pause: PropTypes.bool,
+      }),
     })
   ),
 };
@@ -52,6 +62,7 @@ Footer.defaultProps = {
     {
       value: '',
       selected: false,
+      id: '0',
     },
   ],
   onClearCompleted: () => {},
@@ -63,6 +74,15 @@ Footer.defaultProps = {
       editing: false,
       hidden: false,
       date: new Date(2021, 1, 1),
+      id: '0',
+      timer: {
+        min: '00',
+        sec: '00',
+      },
+      timerButtons: {
+        play: true,
+        pause: false,
+      },
     },
   ],
 };
